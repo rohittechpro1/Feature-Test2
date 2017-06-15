@@ -33,7 +33,7 @@ import java.util.List;
  * Created by hemaladani on 5/2/17.
  */
 
-public class PhotoGalleryFragment extends android.support.v4.app.Fragment {
+public class PhotoGalleryFragment extends VisibleFragment {
     private RecyclerView mPhotoRecyclerView;
     private static final String TAG="PhotoGalleryFragment";
     private List<GalleryItem> mItems=new ArrayList<>();
@@ -51,15 +51,33 @@ public class PhotoGalleryFragment extends android.support.v4.app.Fragment {
 
     }
 
-    private class PhotoHolder extends RecyclerView.ViewHolder{
+    private class PhotoHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
 
         private ImageView mImageView;
+        private GalleryItem mGalleryItem;
+
         public PhotoHolder(View itemView) {
             super(itemView);
             mImageView=(ImageView)itemView.findViewById(R.id.item_image_view);
+            itemView.setOnClickListener(this);
         }
         public void bindDrawable(Drawable drawable){
             mImageView.setImageDrawable(drawable);
+        }
+        public void bindGalleryItem(GalleryItem galleryItem){
+            mGalleryItem=galleryItem;
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            /*Intent i=new Intent(Intent.ACTION_VIEW,mGalleryItem.getPhotographUri());
+            startActivity(i);*/
+
+            Intent i=PhotoPageActivity.newIntent(getActivity(),mGalleryItem.getPhotographUri());
+            startActivity(i);
+
         }
     }
     private class PhotoAdapter extends RecyclerView.Adapter<PhotoHolder>{
@@ -84,6 +102,7 @@ public class PhotoGalleryFragment extends android.support.v4.app.Fragment {
         @Override
         public void onBindViewHolder(PhotoHolder holder, int position) {
             GalleryItem galleryItem=mGalleryItems.get(position);
+            holder.bindGalleryItem(galleryItem);
             Drawable placeHolder= ContextCompat.getDrawable(getContext(),R.drawable.jocker);
             holder.bindDrawable(placeHolder);
             mThumbnailDownloader.queThumbnail(holder,galleryItem.getmUrl());

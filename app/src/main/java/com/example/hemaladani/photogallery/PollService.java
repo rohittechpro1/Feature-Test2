@@ -1,5 +1,6 @@
 package com.example.hemaladani.photogallery;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.Notification;
@@ -31,7 +32,15 @@ public class PollService extends IntentService {
      */
 
     private static final String TAG="PollService";
-    private static final long POLL_INTERVAL_MS= TimeUnit.MINUTES.toMillis(15);
+    private static final long POLL_INTERVAL_MS= TimeUnit.MINUTES.toMillis(1);
+    public static final String ACTION_SHOW_NOTIFICATION="com.example.hemaladani.photogallery.SHOW_NOTIFICATION";
+    public static final String PERM_PRIVATE="com.example.hemaladani.photogallery.PRIVATE";
+    public static final String REQUEST_CODE="REQUEST_CODE";
+    public static final String NOTIFICATION="NOTIFICATION";
+
+
+
+
 
     public static boolean isServiceAlarm(Context context){
         Intent i=PollService.newIntent(context);
@@ -53,8 +62,17 @@ public class PollService extends IntentService {
             alarmManager.cancel(pi);
             pi.cancel();
         }
+        QueryPreferences.setAlarm(context,isOn);
 
     }
+    private void showBackgroundNotification(int requestCode,Notification notification){
+        Intent i=new Intent(ACTION_SHOW_NOTIFICATION);
+        i.putExtra(REQUEST_CODE,requestCode);
+        i.putExtra(NOTIFICATION,notification);
+        sendOrderedBroadcast(i,PERM_PRIVATE,null,null, Activity.RESULT_OK,null,null);
+
+    }
+
     public static Intent newIntent(Context context){
         return new Intent(context,PollService.class);
 
@@ -82,17 +100,21 @@ public class PollService extends IntentService {
         if(resultId.equals(lastResultId)){
             Log.i(TAG,"Received an old result");
 
-        }else{
-            Log.i(TAG,"Received an old result");
-        }
-        Resources resources=getResources();
-        Intent i=PhotoGalleryActivity.newIntent(this);
-        PendingIntent pi=PendingIntent.getActivity(this,0,i,0);
-        Notification notification=new NotificationCompat.Builder(this).setTicker(resources.getString(R.string.new_pictures_title)).setSmallIcon(android.R.drawable.ic_menu_report_image).setContentTitle(resources.getString(R.string.new_pictures_title))
-                .setContentText(resources.getString(R.string.new_pictures_text)).setContentIntent(pi).setAutoCancel(true).build();
-        NotificationManagerCompat notificationManagerCompat=NotificationManagerCompat.from(this);
-        notificationManagerCompat.notify(0,notification);
+        }else {
+            Log.i(TAG, "Received an old result");
 
+            Resources resources = getResources();
+            Intent i = PhotoGalleryActivity.newIntent(this);
+            PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
+            Notification notification = new NotificationCompat.Builder(this).setTicker(resources.getString(R.string.new_pictures_title)).setSmallIcon(android.R.drawable.ic_menu_report_image).setContentTitle(resources.getString(R.string.new_pictures_title))
+                    .setContentText(resources.getString(R.string.new_pictures_text)).setContentIntent(pi).setAutoCancel(true).build();
+            /*NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+            notificationManagerCompat.notify(0, notification);
+            sendBroadcast(new Intent(ACTION_SHOW_NOTIFICATION),PERM_PRIVATE);*/
+
+            showBackgroundNotification(0,notification);
+
+        }
         QueryPreferences.setLastResultId(this,resultId);
 
 

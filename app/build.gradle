@@ -28,4 +28,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:recyclerview-v7:25.2.0'
     compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.google.android.support:wearable:2.0.2'
+    provided 'com.google.android.wearable:wearable:2.0.2'
+
+
 }
