@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 public class FlickrFetchr {
-
+//this is new branch
     private static final String API_KEY="20876718ca497c63915ce5ad9519456a", TAG="FlickrFetchr";
     private static final String FETCH_RECENT_METHOD="flickr.photos.getRecent";
     private static final String SEARCH_METHOD="flickr.photos.search";
