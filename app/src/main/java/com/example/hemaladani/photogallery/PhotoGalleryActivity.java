@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 public class PhotoGalleryActivity extends SingleFragmentActivity {
 // this is a test VCS
 
+    // this is second example
     public static Intent newIntent(Context context){
         return new Intent(context,PhotoGalleryActivity.class);
     }
