@@ -11,6 +11,8 @@ import android.support.v4.app.Fragment;
 
 public class PhotoPageActivity extends SingleFragmentActivity {
 
+// this is vZW UI changes.
+    
     public static Intent newIntent(Context context, Uri photoGraphUri){
         Intent i=new Intent(context,PhotoPageActivity.class);
         i.setData(photoGraphUri);
