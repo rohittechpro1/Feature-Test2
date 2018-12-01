@@ -8,6 +8,8 @@ public class PhotoGalleryActivity extends SingleFragmentActivity {
 // this is a test VCS
 
     // this is second example
+
+    //this is third test file. TMO UI is complete.
     public static Intent newIntent(Context context){
         return new Intent(context,PhotoGalleryActivity.class);
     }
