@@ -11,5 +11,8 @@
     <style name="TextViewstyleTMO">
         <item name="android:textColor">@android:color/holo_blue_bright</item>
     </style>
+    <style name="TextVIewstyleVZW">
+        <item name="android:textColor">@android:color/holo_green_dark</item>
+    </style>
 
 </resources>
